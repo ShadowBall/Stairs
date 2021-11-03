@@ -8,7 +8,7 @@ using UnityEngine;
 // "music" tag is the BackgroundMusic GameObject. The AudioSource has the
 // audio attached to the AudioClip.
 
-public class DontDestroyOnLoad : MonoBehaviour
+public class DontDestroy : MonoBehaviour
 {
     void Awake()
     {

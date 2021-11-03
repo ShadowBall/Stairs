@@ -13,11 +13,14 @@ public class SpawnPlatform : MonoBehaviour
     public GameObject Background4;
     public GameObject Background5;
     public GameObject Background6;
+    public GameObject BackgroundCrystal;
     private int selectedplayer;
     public GameObject obstacle;
     public GameObject gb;
     public GameObject parachute;
+    public GameObject crystal;
     GameObject pr;
+    GameObject cr;
     public GameOverScript Gmos;
     public AudioSource jumpAudio;
     public AudioSource parachuteAudio;
@@ -38,7 +41,9 @@ public class SpawnPlatform : MonoBehaviour
     private bool m_FacingRight = true;
     public bool move = false;
     public bool parachuteappeared = false;
+    public bool crystalappeared = false;
     public bool parachutetaken = false;
+    public bool crystaltaken = false;
     // Start is called before the first frame update
     //public List<GameObject> gameobjects = new List<GameObject>();
     //public Vector3[] positions = new Vector3[gameobjects.Count];
@@ -49,6 +54,7 @@ public class SpawnPlatform : MonoBehaviour
     public int k = 1;
     public int j = 0;
     public int parachuteplatformcounter;
+    public int crystalplatformcounter;
     public int scorecounter = 0;
     public int sticheddeathcounter = 0;
     public int stichedrevivecounter = 0;
@@ -121,6 +127,10 @@ public class SpawnPlatform : MonoBehaviour
                 if (parachuteappeared == true && parachutetaken == false)
                 {
                     pr.transform.localPosition = Vector3.MoveTowards(pr.transform.position, new Vector3(PlatformList[parachuteplatformcounter].transform.position.x - x, PlatformList[parachuteplatformcounter].transform.position.y - y + 2.2f, 0), step);
+                }
+                if (crystalappeared == true && crystaltaken == false)
+                {
+                    cr.transform.localPosition = Vector3.MoveTowards(cr.transform.position, new Vector3(PlatformList[crystalplatformcounter].transform.position.x - x, PlatformList[crystalplatformcounter].transform.position.y - y + 2.2f, 0), step);
                 }
 
 
@@ -213,7 +223,6 @@ public class SpawnPlatform : MonoBehaviour
                 }
                 else if (reversejump1 == true && (rb.transform.position.x - PlatformList[k].transform.position.x) < 0)
                 {
-
                     pc.died = true;
                     pc.DiedFun();
                     diedmove = true;
@@ -290,39 +299,69 @@ public class SpawnPlatform : MonoBehaviour
                 pc.ReviveFun();
             }
         }
-        if(ScoreScript.scoreValue < 50)
+        if (crystaltaken == true && scorecounter < 30)
         {
-            Background1.SetActive(true);
-        }
-        else if(ScoreScript.scoreValue < 100)
-        {
+            pc.crystaled = true;
+            pc.CrystalFun();
+            crystalappeared = true;
+            BackgroundCrystal.SetActive(true);
             Background1.SetActive(false);
-            Background2.SetActive(true);
-        }
-        else if(ScoreScript.scoreValue < 150)
-        {
             Background2.SetActive(false);
-            Background3.SetActive(true);
-        }
-        else if(ScoreScript.scoreValue < 200)
-        {
             Background3.SetActive(false);
-            Background4.SetActive(true);
-        }
-        else if(ScoreScript.scoreValue < 250)
-        {
             Background4.SetActive(false);
-            Background5.SetActive(true);
-        }
-        else if(ScoreScript.scoreValue < 300)
-        {
             Background5.SetActive(false);
-            Background6.SetActive(true);
+            Background6.SetActive(false);
+        }
+        else if (scorecounter == 30)
+        {
+            BackgroundCrystal.SetActive(false);
+            crystaltaken = false;
+            crystalappeared = false;
+            pc.crystaled = false;
+            pc.CrystalFun();
+            scorecounter = 0;
+        }
+        else
+        {
+            if (ScoreScript.scoreValue < 50)
+            {
+                Background1.SetActive(true);
+            }
+            else if (ScoreScript.scoreValue < 100)
+            {
+                Background1.SetActive(false);
+                Background2.SetActive(true);
+            }
+            else if (ScoreScript.scoreValue < 150)
+            {
+                Background2.SetActive(false);
+                Background3.SetActive(true);
+            }
+            else if (ScoreScript.scoreValue < 200)
+            {
+                Background3.SetActive(false);
+                Background4.SetActive(true);
+            }
+            else if (ScoreScript.scoreValue < 250)
+            {
+                Background4.SetActive(false);
+                Background5.SetActive(true);
+            }
+            else if (ScoreScript.scoreValue < 100000000)
+            {
+                Background5.SetActive(false);
+                Background6.SetActive(true);
+            }
         }
     }
     // Update is called once per frame
     void Spawn()
-    {
+    {   
+        if(crystaltaken == true)
+        {  
+            ScoreScript.scoreValue += 2;
+            scorecounter += 3;
+        }
         if (parachutetaken == false)
         {
             jumpAudio.Play();
@@ -363,6 +402,23 @@ public class SpawnPlatform : MonoBehaviour
                 else
                 {
                     parachuteplatformcounter = parachuteplatformcounter - 1;
+                }
+            }
+            if (selectedplayer == 2)
+            {
+                Debug.Log("xDDDDDDDDDDDDDDDDDD");
+                if (crystalappeared == false)
+                {
+                    if (Random.value > 0.9f)
+                    {
+                        cr = (GameObject)Instantiate(crystal, transform.position + new Vector3(PlatformList[j].transform.position.x + randomX, 2.2f + n, 0), transform.rotation);
+                        crystalplatformcounter = j;
+                        crystalappeared = true;
+                    }
+                }
+                else
+                {
+                    crystalplatformcounter = crystalplatformcounter - 1;
                 }
             }
         }

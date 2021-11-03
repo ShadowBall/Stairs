@@ -9,6 +9,7 @@ public class PlayerControls : MonoBehaviour
     public bool jumped = false;
     public bool died = false;
     public bool parachuted = false;
+    public bool crystaled = false;
     public bool revive = false;
     // Start is called before the first frame update
     void Start()
@@ -59,6 +60,18 @@ public class PlayerControls : MonoBehaviour
         else
         {
             animator.SetBool("hasParachute", false);
+        }
+    }
+
+    public void CrystalFun()
+    {
+        if (crystaled == true)
+        {
+            animator.SetBool("hasCrystal", true);
+        }
+        else
+        {
+            animator.SetBool("hasCrystal", false);
         }
     }
 

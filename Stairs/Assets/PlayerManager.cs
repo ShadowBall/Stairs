@@ -14,6 +14,9 @@ public class PlayerManager : MonoBehaviour
     private string selectedplayername = "SelectedPlayer";
     public GameObject PreviousButton;
     public GameObject NextButton;
+    public GameObject SwatDetails;
+    public GameObject StitchedDetails;
+    public GameObject ExplorerDetails;
     //public GameObject character;
 
     
@@ -23,10 +26,34 @@ public class PlayerManager : MonoBehaviour
     }
     public void NextOption()
     {   
-        PreviousButton.SetActive(true);
         players[selectedplayer].SetActive(false);
         //spl.playerobjects[selectedplayer].SetActive(false);
         selectedplayer = selectedplayer + 1;
+        if(selectedplayer == 0)
+        {
+            SwatDetails.SetActive(true);
+        }
+        else
+        {
+            SwatDetails.SetActive(false);
+        }
+        if (selectedplayer == 1)
+        {
+            StitchedDetails.SetActive(true);
+        }
+        else
+        {
+            StitchedDetails.SetActive(false);
+        }
+        if (selectedplayer == 2)
+        {
+            ExplorerDetails.SetActive(true);
+            PreviousButton.SetActive(true);
+        }
+        else
+        {
+            ExplorerDetails.SetActive(false);
+        }
         players[selectedplayer].SetActive(true);
         //spl.playerobjects[selectedplayer].SetActive(true);
         if (selectedplayer == players.Count-1)
@@ -49,7 +76,32 @@ public class PlayerManager : MonoBehaviour
         {
             PreviousButton.SetActive(false);
         }
-        
+        if (selectedplayer == 0)
+        {
+            SwatDetails.SetActive(true);
+        }
+        else
+        {
+            SwatDetails.SetActive(false);
+        }
+        if (selectedplayer == 1)
+        {
+            StitchedDetails.SetActive(true);
+        }
+        else
+        {
+            StitchedDetails.SetActive(false);
+        }
+        if (selectedplayer == 2)
+        {
+            ExplorerDetails.SetActive(true);
+            PreviousButton.SetActive(true);
+        }
+        else
+        {
+            ExplorerDetails.SetActive(false);
+        }
+
         //im = players[selecterplayer];
     }
 
